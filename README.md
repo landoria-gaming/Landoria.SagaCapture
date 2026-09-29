@@ -2,7 +2,11 @@
 
 Records high-definition Valheim videos with automatic switching between your gameplay view and a second camera that follows your character.
 
-[Watch SagaCapture in action on YouTube](https://youtu.be/_2L1In2dieM)
+## Video demo
+
+<p align="left">
+  <a href="https://youtu.be/_2L1In2dieM"><img src="https://raw.githubusercontent.com/landoria-gaming/Landoria.SagaCapture/main/assets/saga-capture.jpg" alt="SagaCapture video demo" width="300"></a>
+</p>
 
 ## Requirements
 
