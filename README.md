@@ -5,7 +5,7 @@ Records high-definition Valheim videos with automatic switching between your gam
 ## Video demo
 
 <p align="left">
-  <a href="https://youtu.be/_2L1In2dieM"><img src="https://raw.githubusercontent.com/landoria-gaming/Landoria.SagaCapture/main/assets/saga-capture.jpg" alt="SagaCapture video demo" width="300"></a>
+  <a href="https://youtu.be/_2L1In2dieM"><img src="https://raw.githubusercontent.com/landoria-gaming/Landoria.SagaCapture/main/assets/saga-capture.png" alt="SagaCapture video demo" width="300"></a>
 </p>
 
 ## Requirements
