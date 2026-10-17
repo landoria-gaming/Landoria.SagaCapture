@@ -26,7 +26,8 @@ namespace Landoria.SagaCapture
             float scaleY = (float)output.height / Screen.height;
             var bounds = new Rect(mouse.x * scaleX,
                 (Screen.height - mouse.y) * scaleY,
-                _texture.width * scaleX, _texture.height * scaleY);
+                _texture.width * scaleX * Preference.CursorScale,
+                _texture.height * scaleY * Preference.CursorScale);
             RenderTexture previous = RenderTexture.active;
             try
             {
