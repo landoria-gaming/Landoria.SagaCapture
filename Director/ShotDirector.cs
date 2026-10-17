@@ -232,7 +232,7 @@ namespace Landoria.SagaCapture
                 renderWidth, renderHeight, AntiAliasingSamples, filterMode);
             _videoSource = gameObject.AddComponent<SagaCaptureVideoSource>();
             _videoSource.Initialize(_cameraRig.Camera,
-                _cameraRig.OutputTexture, Preference.GameplayIncludeUi);
+                _cameraRig.OutputTexture);
             _gameplayCapture = gameplayCamera.gameObject
                 .AddComponent<SagaCaptureGameplayCapture>();
             _gameplayCapture.Initialize(_videoSource);

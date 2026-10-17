@@ -68,10 +68,9 @@ namespace Landoria.SagaCapture
                 "Lower quality reduces file size and encoding load.");
             gameplayIncludeUi = config.Bind(
                 "GameplayCamera", "IncludeUI", true,
-                "Include Valheim's interface in gameplay-camera shots. " +
-                "When true, mouse-driven interfaces cut to gameplay and " +
-                "show the pointer. When false, gameplay shots are captured " +
-                "before overlay UI is rendered.");
+                "When true, interactions cut to gameplay and show Valheim's " +
+                "interface and pointer. Other gameplay shots stay free of " +
+                "the interface. When false, interactions do not force cuts.");
             grassDistance = config.Bind(
                 "WorldRendering", "GrassDistance", 0f,
                 new ConfigDescription(

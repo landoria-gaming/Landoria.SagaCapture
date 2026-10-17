@@ -8,7 +8,6 @@ namespace Landoria.SagaCapture
     {
         private Camera _cinematicCamera;
         private RenderTexture _output;
-        private bool _includeGameplayUi;
         private bool _forceGameplayUi;
         private SagaCaptureCursorOverlay _cursorOverlay;
         private Coroutine _screenCaptureRoutine;
@@ -17,12 +16,10 @@ namespace Landoria.SagaCapture
         internal bool IsCinematic { get; private set; }
 
         // Connects both mod-controlled views to one persistent output texture.
-        internal void Initialize(Camera cinematicCamera, RenderTexture output,
-            bool includeGameplayUi)
+        internal void Initialize(Camera cinematicCamera, RenderTexture output)
         {
             _cinematicCamera = cinematicCamera;
             _output = output;
-            _includeGameplayUi = includeGameplayUi;
             _cursorOverlay = new SagaCaptureCursorOverlay();
             SetCinematic(true);
             _screenCaptureRoutine = StartCoroutine(CaptureScreenFrames());
@@ -51,8 +48,7 @@ namespace Landoria.SagaCapture
         // Copies the pre-interface gameplay frame when that view is selected.
         internal void CopyGameplay(RenderTexture source)
         {
-            if (!IsCinematic && !_includeGameplayUi && !_forceGameplayUi &&
-                _output != null)
+            if (!IsCinematic && !_forceGameplayUi && _output != null)
             {
                 Graphics.Blit(source, _output);
             }
@@ -64,8 +60,7 @@ namespace Landoria.SagaCapture
             while (true)
             {
                 yield return new WaitForEndOfFrame();
-                if (!IsCinematic && (_includeGameplayUi || _forceGameplayUi) &&
-                    _output != null)
+                if (!IsCinematic && _forceGameplayUi && _output != null)
                 {
                     CopyScreenWithVerticalCorrection();
                 }
