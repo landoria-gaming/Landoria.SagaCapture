@@ -66,6 +66,7 @@
     <Compile Include="Capture\FrameRateLimit.cs" />
     <Compile Include="Capture\GameplayCapture.cs" />
     <Compile Include="Capture\VideoSource.cs" />
+    <Compile Include="Capture\CursorOverlay.cs" />
     <Compile Include="CinematicCamera\Rig.cs" />
     <Compile Include="CinematicCamera\ValheimCameraAdapter.cs" />
     <Compile Include="Rendering\CameraLogger.cs" />

@@ -10,6 +10,7 @@ namespace Landoria.SagaCapture
         private RenderTexture _output;
         private bool _includeGameplayUi;
         private bool _forceGameplayUi;
+        private SagaCaptureCursorOverlay _cursorOverlay;
         private Coroutine _screenCaptureRoutine;
 
         internal Texture Texture => _output;
@@ -22,6 +23,7 @@ namespace Landoria.SagaCapture
             _cinematicCamera = cinematicCamera;
             _output = output;
             _includeGameplayUi = includeGameplayUi;
+            _cursorOverlay = new SagaCaptureCursorOverlay();
             SetCinematic(true);
             _screenCaptureRoutine = StartCoroutine(CaptureScreenFrames());
         }
@@ -81,6 +83,10 @@ namespace Landoria.SagaCapture
                 ScreenCapture.CaptureScreenshotIntoRenderTexture(screen);
                 Graphics.Blit(screen, _output,
                     new Vector2(1f, -1f), new Vector2(0f, 1f));
+                if (Cursor.visible && Cursor.lockState == CursorLockMode.None)
+                {
+                    _cursorOverlay.Draw(_output);
+                }
             }
             finally
             {
@@ -97,6 +103,8 @@ namespace Landoria.SagaCapture
                 _screenCaptureRoutine = null;
             }
             _cinematicCamera = null;
+            _cursorOverlay?.Dispose();
+            _cursorOverlay = null;
             _output = null;
         }
     }

@@ -61,7 +61,9 @@ namespace Landoria.SagaCapture
         private void UpdateInterfaceOverride()
         {
             bool visible = InventoryGui.IsVisible() ||
-                Hud.IsPieceSelectionVisible() || Hud.InRadial();
+                Hud.IsPieceSelectionVisible() || Hud.InRadial() ||
+                Application.isFocused && Cursor.visible &&
+                Cursor.lockState == CursorLockMode.None;
             if (visible == _interfaceOverride)
             {
                 return;
