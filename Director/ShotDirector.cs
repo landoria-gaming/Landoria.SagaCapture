@@ -57,10 +57,11 @@ namespace Landoria.SagaCapture
             CheckCinematicVisibility();
         }
 
-        // Shows inventory, crafting and container interactions in the recording.
+        // Shows inventory, build and radial menus in the recording.
         private void UpdateInterfaceOverride()
         {
-            bool visible = InventoryGui.IsVisible();
+            bool visible = InventoryGui.IsVisible() ||
+                Hud.IsPieceSelectionVisible() || Hud.InRadial();
             if (visible == _interfaceOverride)
             {
                 return;
@@ -73,7 +74,7 @@ namespace Landoria.SagaCapture
                 _remainingShotDuration = Mathf.Max(0f, _nextShotAt - Time.time);
                 _videoSource.SetCinematic(false);
                 SagaCapturePlugin.Log.LogDebug(
-                    "Inventory opened; showing gameplay interface.");
+                    "Interaction menu opened; showing gameplay interface.");
                 return;
             }
             if (_resumeCinematic && _cameraRig?.HasTargetVisibility() == true)
@@ -81,7 +82,7 @@ namespace Landoria.SagaCapture
                 _videoSource.SetCinematic(true);
             }
             _nextShotAt = Time.time + _remainingShotDuration;
-            SagaCapturePlugin.Log.LogDebug("Inventory closed; resuming shot.");
+            SagaCapturePlugin.Log.LogDebug("Interaction menu closed; resuming shot.");
         }
 
         // Forces gameplay after the cinematic camera loses the player.
