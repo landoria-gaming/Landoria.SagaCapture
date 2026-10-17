@@ -60,10 +60,10 @@ namespace Landoria.SagaCapture
         // Shows inventory, build and radial menus in the recording.
         private void UpdateInterfaceOverride()
         {
-            bool visible = InventoryGui.IsVisible() ||
-                Hud.IsPieceSelectionVisible() || Hud.InRadial() ||
-                Application.isFocused && Cursor.visible &&
-                Cursor.lockState == CursorLockMode.None;
+            bool visible = Preference.GameplayIncludeUi &&
+                (InventoryGui.IsVisible() || Hud.IsPieceSelectionVisible() ||
+                 Hud.InRadial() || Application.isFocused && Cursor.visible &&
+                 Cursor.lockState == CursorLockMode.None);
             if (visible == _interfaceOverride)
             {
                 return;

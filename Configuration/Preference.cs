@@ -69,9 +69,9 @@ namespace Landoria.SagaCapture
             gameplayIncludeUi = config.Bind(
                 "GameplayCamera", "IncludeUI", true,
                 "Include Valheim's interface in gameplay-camera shots. " +
-                "Mouse-driven interfaces always show the interface and " +
-                "pointer. When false, other gameplay shots " +
-                "are captured before overlay UI is rendered.");
+                "When true, mouse-driven interfaces cut to gameplay and " +
+                "show the pointer. When false, gameplay shots are captured " +
+                "before overlay UI is rendered.");
             grassDistance = config.Bind(
                 "WorldRendering", "GrassDistance", 0f,
                 new ConfigDescription(
