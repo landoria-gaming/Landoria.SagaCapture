@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="Configuration\ConfigWatcher.cs" />
     <Compile Include="Configuration\Preference.cs" />
+    <Compile Include="Rendering\GrassDistanceController.cs" />
+    <Compile Include="Rendering\GrassDistancePatch.cs" />
     <Compile Include="SagaCapturePlugin.cs" />
     <Compile Include="Director\ShotDirector.cs" />
     <Compile Include="Director\CameraPlacementDirector.cs" />

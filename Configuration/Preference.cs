@@ -17,6 +17,7 @@ namespace Landoria.SagaCapture
         private static ConfigEntry<bool> gameplayIncludeUi;
         private static ConfigEntry<float> minimumShotDuration;
         private static ConfigEntry<float> maximumShotDuration;
+        private static ConfigEntry<float> grassDistance;
 
         internal const float TreeScanRadius = 10f;
         internal const float TreeScanIntervalSeconds = 0.5f;
@@ -36,6 +37,7 @@ namespace Landoria.SagaCapture
         internal static float MinimumShotDuration => minimumShotDuration.Value;
         internal static float MaximumShotDuration => Mathf.Max(
             MinimumShotDuration, maximumShotDuration.Value);
+        internal static float GrassDistance => grassDistance.Value;
         internal static string CameraOperatorConfigPath => Path.Combine(
             Paths.ConfigPath, "SagaCapture", "config.yaml");
 
@@ -68,6 +70,12 @@ namespace Landoria.SagaCapture
                 "GameplayCamera", "IncludeUI", true,
                 "Include Valheim's interface in gameplay-camera shots. " +
                 "When false, capture occurs before overlay UI is rendered.");
+            grassDistance = config.Bind(
+                "WorldRendering", "GrassDistance", 0f,
+                new ConfigDescription(
+                    "Grass draw distance in meters. 0 keeps Valheim's " +
+                    "original distance. Higher values can reduce performance.",
+                    new AcceptableValueRange<float>(0f, 160f)));
             InitializeDirector(config);
         }
 
@@ -95,6 +103,7 @@ namespace Landoria.SagaCapture
             gameplayIncludeUi.Value = true;
             minimumShotDuration.Value = 8f;
             maximumShotDuration.Value = 15f;
+            grassDistance.Value = 0f;
             config.Save();
             Landoria.Shared.ConfigWatcher.IgnoreCurrentFileVersion();
         }

@@ -54,6 +54,7 @@ namespace Landoria.SagaCapture
         private void Update()
         {
             ConfigWatcher.Update();
+            GrassDistanceController.Update();
             bool captureKeyPressed =
                 IsMainKeyDown(Preference.CaptureModeShortcut);
             if (_shotDirector.IsActive)
@@ -115,6 +116,7 @@ namespace Landoria.SagaCapture
         private void OnDestroy()
         {
             ConfigWatcher.Dispose();
+            GrassDistanceController.Dispose();
             _harmony?.UnpatchSelf();
             _harmony = null;
             _shotDirector?.Shutdown();
