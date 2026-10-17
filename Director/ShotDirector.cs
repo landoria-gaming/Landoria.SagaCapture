@@ -57,13 +57,12 @@ namespace Landoria.SagaCapture
             CheckCinematicVisibility();
         }
 
-        // Shows inventory, build and radial menus in the recording.
+        // Shows the game interface only while Valheim displays its mouse cursor.
         private void UpdateInterfaceOverride()
         {
             bool visible = Preference.GameplayIncludeUi &&
-                (InventoryGui.IsVisible() || Hud.IsPieceSelectionVisible() ||
-                 Hud.InRadial() || Application.isFocused && Cursor.visible &&
-                 Cursor.lockState == CursorLockMode.None);
+                Application.isFocused && Cursor.visible &&
+                Cursor.lockState == CursorLockMode.None;
             if (visible == _interfaceOverride)
             {
                 return;
