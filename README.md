@@ -50,7 +50,6 @@ BepInEx/config/Landoria.SagaCapture.cfg
 | `CinematicCameraRendering` | `ShowFrameRate` | `false` | Shows the cinematic-camera FPS counter in the top-left corner. |
 | `Recording` | `Quality` | `Medium` | Sets the recording quality to `Low`, `Medium`, `High`, or `Highest`. Lower values reduce file size and encoding load. |
 | `GameplayCamera` | `IncludeUI` | `true` | Includes the Valheim interface in gameplay shots. Mouse-driven interfaces always show the interface and pointer. |
-| `GameplayCamera` | `CursorScale` | `2` | Multiplies the recorded Valheim cursor size; accepts values from `1` to `4`. |
 | `WorldRendering` | `GrassDistance` | `0` | Sets grass draw distance in meters. `0` keeps Valheim's original distance. Higher values can reduce performance. |
 | `Director` | `MinimumShotDuration` | `8` | Sets the minimum shot duration in seconds. |
 | `Director` | `MaximumShotDuration` | `15` | Sets the maximum shot duration in seconds. |

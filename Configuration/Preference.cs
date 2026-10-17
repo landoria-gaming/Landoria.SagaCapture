@@ -15,7 +15,6 @@ namespace Landoria.SagaCapture
         private static ConfigEntry<
             UnityRuntimeCameraRecorder.RecordingQualityPreset> recordingQuality;
         private static ConfigEntry<bool> gameplayIncludeUi;
-        private static ConfigEntry<float> cursorScale;
         private static ConfigEntry<float> minimumShotDuration;
         private static ConfigEntry<float> maximumShotDuration;
         private static ConfigEntry<float> grassDistance;
@@ -35,7 +34,6 @@ namespace Landoria.SagaCapture
             QualitySettings.vSyncCount == 0;
         internal static bool ShowFrameRate => showFrameRate.Value;
         internal static bool GameplayIncludeUi => gameplayIncludeUi.Value;
-        internal static float CursorScale => cursorScale.Value;
         internal static float MinimumShotDuration => minimumShotDuration.Value;
         internal static float MaximumShotDuration => Mathf.Max(
             MinimumShotDuration, maximumShotDuration.Value);
@@ -74,11 +72,6 @@ namespace Landoria.SagaCapture
                 "Mouse-driven interfaces always show the interface and " +
                 "pointer. When false, other gameplay shots " +
                 "are captured before overlay UI is rendered.");
-            cursorScale = config.Bind(
-                "GameplayCamera", "CursorScale", 2f,
-                new ConfigDescription(
-                    "Size multiplier for Valheim's cursor in recordings.",
-                    new AcceptableValueRange<float>(1f, 4f)));
             grassDistance = config.Bind(
                 "WorldRendering", "GrassDistance", 0f,
                 new ConfigDescription(
@@ -110,7 +103,6 @@ namespace Landoria.SagaCapture
             recordingQuality.Value =
                 UnityRuntimeCameraRecorder.RecordingQualityPreset.Medium;
             gameplayIncludeUi.Value = true;
-            cursorScale.Value = 2f;
             minimumShotDuration.Value = 8f;
             maximumShotDuration.Value = 15f;
             grassDistance.Value = 0f;
