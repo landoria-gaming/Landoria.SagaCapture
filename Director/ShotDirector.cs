@@ -25,6 +25,9 @@ namespace Landoria.SagaCapture
         private SagaCaptureAudioDiagnostics _audioDiagnostics;
         private float _targetLostSince = -1f;
         private float _nextShotAt;
+        private bool _interfaceOverride;
+        private bool _resumeCinematic;
+        private float _remainingShotDuration;
         private readonly SagaCaptureFrameRateLimit _frameRateLimit =
             new SagaCaptureFrameRateLimit();
 
@@ -42,11 +45,43 @@ namespace Landoria.SagaCapture
             {
                 return;
             }
+            UpdateInterfaceOverride();
+            if (_interfaceOverride)
+            {
+                return;
+            }
             if (Time.time >= _nextShotAt)
             {
                 CutToNextSource();
             }
             CheckCinematicVisibility();
+        }
+
+        // Shows inventory, crafting and container interactions in the recording.
+        private void UpdateInterfaceOverride()
+        {
+            bool visible = InventoryGui.IsVisible();
+            if (visible == _interfaceOverride)
+            {
+                return;
+            }
+            _interfaceOverride = visible;
+            _videoSource.ForceGameplayUi(visible);
+            if (visible)
+            {
+                _resumeCinematic = _videoSource.IsCinematic;
+                _remainingShotDuration = Mathf.Max(0f, _nextShotAt - Time.time);
+                _videoSource.SetCinematic(false);
+                SagaCapturePlugin.Log.LogDebug(
+                    "Inventory opened; showing gameplay interface.");
+                return;
+            }
+            if (_resumeCinematic && _cameraRig?.HasTargetVisibility() == true)
+            {
+                _videoSource.SetCinematic(true);
+            }
+            _nextShotAt = Time.time + _remainingShotDuration;
+            SagaCapturePlugin.Log.LogDebug("Inventory closed; resuming shot.");
         }
 
         // Forces gameplay after the cinematic camera loses the player.
@@ -143,6 +178,7 @@ namespace Landoria.SagaCapture
             {
                 _recorder = gameObject.AddComponent<Recorder>();
                 _targetLostSince = -1f;
+                _interfaceOverride = false;
                 SubscribeRecorder();
                 _cameraRig.BeginMovement();
                 if (!_placementDirector.TryPlace(_cameraRig))
@@ -368,6 +404,7 @@ namespace Landoria.SagaCapture
             }
             _gameplayListener = null;
             _targetLostSince = -1f;
+            _interfaceOverride = false;
         }
 
         // Releases the offscreen camera.

@@ -9,6 +9,7 @@ namespace Landoria.SagaCapture
         private Camera _cinematicCamera;
         private RenderTexture _output;
         private bool _includeGameplayUi;
+        private bool _forceGameplayUi;
         private Coroutine _screenCaptureRoutine;
 
         internal Texture Texture => _output;
@@ -22,10 +23,13 @@ namespace Landoria.SagaCapture
             _output = output;
             _includeGameplayUi = includeGameplayUi;
             SetCinematic(true);
-            if (includeGameplayUi)
-            {
-                _screenCaptureRoutine = StartCoroutine(CaptureScreenFrames());
-            }
+            _screenCaptureRoutine = StartCoroutine(CaptureScreenFrames());
+        }
+
+        // Includes the interface while Valheim's inventory is open.
+        internal void ForceGameplayUi(bool enabled)
+        {
+            _forceGameplayUi = enabled;
         }
 
         // Performs a hard cut without changing the recorder's source.
@@ -45,7 +49,8 @@ namespace Landoria.SagaCapture
         // Copies the pre-interface gameplay frame when that view is selected.
         internal void CopyGameplay(RenderTexture source)
         {
-            if (!IsCinematic && !_includeGameplayUi && _output != null)
+            if (!IsCinematic && !_includeGameplayUi && !_forceGameplayUi &&
+                _output != null)
             {
                 Graphics.Blit(source, _output);
             }
@@ -57,7 +62,8 @@ namespace Landoria.SagaCapture
             while (true)
             {
                 yield return new WaitForEndOfFrame();
-                if (!IsCinematic && _output != null)
+                if (!IsCinematic && (_includeGameplayUi || _forceGameplayUi) &&
+                    _output != null)
                 {
                     CopyScreenWithVerticalCorrection();
                 }
