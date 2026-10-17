@@ -71,7 +71,8 @@ namespace Landoria.SagaCapture
                 "When true, Valheim's visible mouse cursor or an open " +
                 "runestone text switches recording to gameplay with UI. " +
                 "Otherwise gameplay shots have no interface. " +
-                "When false, the cursor does not force cuts.");
+                "When false, the cursor does not force cuts. The Escape " +
+                "menu always switches to the cinematic camera.");
             grassDistance = config.Bind(
                 "WorldRendering", "GrassDistance", 0f,
                 new ConfigDescription(

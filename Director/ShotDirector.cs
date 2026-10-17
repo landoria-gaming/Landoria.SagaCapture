@@ -28,6 +28,9 @@ namespace Landoria.SagaCapture
         private bool _interfaceOverride;
         private bool _resumeCinematic;
         private float _remainingShotDuration;
+        private bool _menuOverride;
+        private bool _resumeCinematicAfterMenu;
+        private float _remainingMenuShotDuration;
         private readonly SagaCaptureFrameRateLimit _frameRateLimit =
             new SagaCaptureFrameRateLimit();
 
@@ -45,6 +48,10 @@ namespace Landoria.SagaCapture
             {
                 return;
             }
+            if (UpdateMenuOverride())
+            {
+                return;
+            }
             UpdateInterfaceOverride();
             if (_interfaceOverride)
             {
@@ -55,6 +62,38 @@ namespace Landoria.SagaCapture
                 CutToNextSource();
             }
             CheckCinematicVisibility();
+        }
+
+        // Keeps the Escape menu out of the recording by selecting the outer camera.
+        private bool UpdateMenuOverride()
+        {
+            bool open = Menu.IsActive();
+            if (open == _menuOverride)
+            {
+                return open;
+            }
+            _menuOverride = open;
+            if (open)
+            {
+                _resumeCinematicAfterMenu = _interfaceOverride
+                    ? _resumeCinematic : _videoSource.IsCinematic;
+                _remainingMenuShotDuration = _interfaceOverride
+                    ? _remainingShotDuration
+                    : Mathf.Max(0f, _nextShotAt - Time.time);
+                _interfaceOverride = false;
+                _videoSource.ForceGameplayUi(false);
+                _placementDirector.TryPlace(_cameraRig);
+                _videoSource.SetCinematic(true);
+                SagaCapturePlugin.Log.LogDebug(
+                    "Escape menu opened; showing cinematic camera.");
+                return true;
+            }
+            bool resumeCinematic = _resumeCinematicAfterMenu &&
+                _cameraRig?.HasTargetVisibility() == true;
+            _videoSource.SetCinematic(resumeCinematic);
+            _nextShotAt = Time.time + _remainingMenuShotDuration;
+            SagaCapturePlugin.Log.LogDebug("Escape menu closed; resuming shot.");
+            return true;
         }
 
         // Shows the interface for the mouse cursor or an open runestone text.
@@ -193,6 +232,7 @@ namespace Landoria.SagaCapture
                 _recorder = gameObject.AddComponent<Recorder>();
                 _targetLostSince = -1f;
                 _interfaceOverride = false;
+                _menuOverride = false;
                 SubscribeRecorder();
                 _cameraRig.BeginMovement();
                 if (!_placementDirector.TryPlace(_cameraRig))
@@ -419,6 +459,7 @@ namespace Landoria.SagaCapture
             _gameplayListener = null;
             _targetLostSince = -1f;
             _interfaceOverride = false;
+            _menuOverride = false;
         }
 
         // Releases the offscreen camera.
