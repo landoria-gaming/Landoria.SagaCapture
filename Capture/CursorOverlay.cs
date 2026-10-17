@@ -9,6 +9,7 @@ namespace Landoria.SagaCapture
     {
         private RawImage _cursorImage;
         private readonly Vector3[] _corners = new Vector3[4];
+        private int _reportedWidth;
 
         // Positions the game's cursor image at its display-space mouse position.
         internal void Draw(RenderTexture output)
@@ -28,6 +29,18 @@ namespace Landoria.SagaCapture
             _cursorImage.rectTransform.GetWorldCorners(_corners);
             float width = Mathf.Abs(_corners[2].x - _corners[0].x);
             float height = Mathf.Abs(_corners[2].y - _corners[0].y);
+            if (SagaCaptureNativeCursorSize.TryGet(
+                out int nativeWidth, out int nativeHeight))
+            {
+                width = nativeWidth;
+                height = nativeHeight;
+                if (_reportedWidth != nativeWidth)
+                {
+                    _reportedWidth = nativeWidth;
+                    SagaCapturePlugin.Log.LogInfo(
+                        $"Recording Valheim cursor at {nativeWidth}x{nativeHeight} pixels.");
+                }
+            }
             var bounds = new Rect(mouse.x * scaleX,
                 (Screen.height - mouse.y) * scaleY,
                 width * scaleX, height * scaleY);
