@@ -22,6 +22,7 @@ namespace Landoria.SagaCapture
         private SagaCaptureGameplayCapture _gameplayCapture;
         private SagaCaptureVideoSource _videoSource;
         private string _outputPath;
+        private SagaCaptureAudioDiagnostics _audioDiagnostics;
         private float _targetLostSince = -1f;
         private float _nextShotAt;
         private readonly SagaCaptureFrameRateLimit _frameRateLimit =
@@ -36,6 +37,7 @@ namespace Landoria.SagaCapture
         // Applies mod-owned cuts and protects recordings from lost framing.
         private void Update()
         {
+            _audioDiagnostics?.Poll();
             if (_recorder?.IsCapturing != true)
             {
                 return;
@@ -114,6 +116,7 @@ namespace Landoria.SagaCapture
                 return;
             }
             _recorder.StopRecording();
+            EndAudioDiagnostics();
             ReleaseCamera();
         }
 
@@ -149,6 +152,7 @@ namespace Landoria.SagaCapture
                 }
                 _videoSource.SetCinematic(true);
                 ScheduleNextCut();
+                _audioDiagnostics = SagaCaptureAudioDiagnostics.Begin();
                 _recorder.StartRecording(
                     CreateSequence(), _gameplayListener,
                     CreateSettings(_outputPath));
@@ -349,6 +353,7 @@ namespace Landoria.SagaCapture
         // Releases the recorder and offscreen camera.
         private void ReleaseSession()
         {
+            EndAudioDiagnostics();
             if (_warmupRoutine != null)
             {
                 StopCoroutine(_warmupRoutine);
@@ -397,6 +402,18 @@ namespace Landoria.SagaCapture
                 _recorder.StopRecording();
             }
             ReleaseSession();
+        }
+
+        // Reports the audio writer outcome once for each recording.
+        private void EndAudioDiagnostics()
+        {
+            if (_audioDiagnostics == null)
+            {
+                return;
+            }
+
+            SagaCaptureAudioDiagnostics.End(_audioDiagnostics);
+            _audioDiagnostics = null;
         }
 
         // Displays a local status message when a player is available.

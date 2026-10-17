@@ -57,6 +57,8 @@
     <Compile Include="SagaCapturePlugin.cs" />
     <Compile Include="Director\ShotDirector.cs" />
     <Compile Include="Director\CameraPlacementDirector.cs" />
+    <Compile Include="Capture\AudioDiagnostics.cs" />
+    <Compile Include="Capture\AudioDiagnosticsPatch.cs" />
     <Compile Include="Capture\AudioListener.cs" />
     <Compile Include="Capture\FrameRateDisplay.cs" />
     <Compile Include="Capture\FrameRateLimit.cs" />
@@ -82,7 +84,8 @@
     <_SnapshotExtraFiles Include="$(MSBuildProjectDirectory)\bin\Release\Direct3DVideoEncoder.dll" />
   </ItemGroup>
   <!-- Downloads and extracts the latest CineCapture release only when its ETag changes. -->
-  <Target Name="UpdateCineCaptureLibraries" BeforeTargets="PrepareForBuild">
+  <Target Name="UpdateCineCaptureLibraries" BeforeTargets="PrepareForBuild"
+          Condition="'$(SkipCineCaptureUpdate)' != 'true'">
     <MakeDir Directories="$(CineCaptureDownloadDirectory);$(MSBuildProjectDirectory)\lib" />
     <Exec Command="curl --fail --location --silent --show-error --output NUL --write-out &quot;%%{url_effective}&quot; &quot;$(CineCaptureLatestReleaseUrl)&quot;"
           ConsoleToMSBuild="true"
@@ -111,6 +114,11 @@
     <Copy SourceFiles="$(CineCaptureDownloadedEtag)"
           DestinationFiles="$(CineCaptureEtag)"
           Condition="'$(_CineCaptureHttpStatus)' == '200'" />
+  </Target>
+  <Target Name="ValidateLocalCineCapture" BeforeTargets="PrepareForBuild"
+          Condition="'$(SkipCineCaptureUpdate)' == 'true'">
+    <Error Condition="!Exists('$(MSBuildProjectDirectory)\lib\CineCapture.dll')"
+           Text="Build CineCapture locally and copy CineCapture.dll to lib before setting SkipCineCaptureUpdate=true." />
   </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
