@@ -57,12 +57,12 @@ namespace Landoria.SagaCapture
             CheckCinematicVisibility();
         }
 
-        // Shows the game interface only while Valheim displays its mouse cursor.
+        // Shows the interface for the mouse cursor or an open runestone text.
         private void UpdateInterfaceOverride()
         {
             bool visible = Preference.GameplayIncludeUi &&
-                Application.isFocused && Cursor.visible &&
-                Cursor.lockState == CursorLockMode.None;
+                (Application.isFocused && Cursor.visible &&
+                 Cursor.lockState == CursorLockMode.None || IsRuneTextVisible());
             if (visible == _interfaceOverride)
             {
                 return;
@@ -84,6 +84,18 @@ namespace Landoria.SagaCapture
             }
             _nextShotAt = Time.time + _remainingShotDuration;
             SagaCapturePlugin.Log.LogDebug("Interaction menu closed; resuming shot.");
+        }
+
+        // The rune panel can be visible while Valheim keeps the cursor hidden.
+        private static bool IsRuneTextVisible()
+        {
+            TextViewer viewer = TextViewer.instance;
+            if (viewer == null || viewer.m_root == null)
+            {
+                return false;
+            }
+            Animator animator = viewer.m_root.GetComponent<Animator>();
+            return animator != null && animator.GetBool("visible");
         }
 
         // Forces gameplay after the cinematic camera loses the player.
