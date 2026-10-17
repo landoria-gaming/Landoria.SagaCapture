@@ -70,6 +70,7 @@ namespace Landoria.SagaCapture
             _offscreenTarget.Create();
             _camera.targetTexture = _offscreenTarget;
             _camera.enabled = true;
+            GrassDistanceController.CaptureCamera = _camera;
         }
 
         // Updates autonomous camera movement after player movement completes.
@@ -239,6 +240,10 @@ namespace Landoria.SagaCapture
         // Releases rendering resources and destroys the secondary camera.
         internal void Dispose()
         {
+            if (GrassDistanceController.CaptureCamera == _camera)
+            {
+                GrassDistanceController.CaptureCamera = null;
+            }
             _cameraOperator?.Dispose();
             _cameraOperator = null;
             EndOffscreenRendering();

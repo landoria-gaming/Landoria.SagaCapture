@@ -57,6 +57,8 @@
     <Compile Include="Configuration\Preference.cs" />
     <Compile Include="Rendering\GrassDistanceController.cs" />
     <Compile Include="Rendering\GrassDistancePatch.cs" />
+    <Compile Include="Rendering\GrassCameraPatch.cs" />
+    <Compile Include="Rendering\GrassPatchGenerationPatch.cs" />
     <Compile Include="SagaCapturePlugin.cs" />
     <Compile Include="Director\ShotDirector.cs" />
     <Compile Include="Director\CameraPlacementDirector.cs" />

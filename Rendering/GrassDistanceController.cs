@@ -7,6 +7,7 @@ namespace Landoria.SagaCapture
     {
         private static ClutterSystem system;
         private static float vanillaDistance;
+        internal static Camera CaptureCamera { get; set; }
 
         // Updates the grass distance after configuration changes or world loads.
         internal static void Update()
@@ -48,6 +49,7 @@ namespace Landoria.SagaCapture
             }
 
             system = null;
+            CaptureCamera = null;
         }
     }
 }
