@@ -78,11 +78,6 @@ If `rejectedBlocks = 0` but drift remains, report the BepInEx log and the MP4
 stream durations. If finalization failed, also keep the intermediate MKV. The
 cause is then outside this audio queue rejection path.
 
-For a local CineCapture build that has not been released yet, copy its
-`CineCapture.dll` into `lib/` and build SagaCapture with
-`SkipCineCaptureUpdate=true`. Normal builds download the latest CineCapture
-release.
-
 ## Contributions welcome
 
 CineCapture is the underlying capture project used by SagaCapture. We welcome
