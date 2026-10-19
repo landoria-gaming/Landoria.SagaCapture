@@ -61,26 +61,6 @@ maintain the selected recording rate of 30 or 60 FPS. If needed, lower the game
 resolution from 4K (`2160p`) to 2K (`1440p`) or Full HD (`1080p`). Prefer a
 native resolution when performance allows it.
 
-## Diagnose audio drift
-
-The BepInEx log reports audio buffers accepted and rejected by CineCapture.
-After stopping a recording, look for `Audio diagnostics final` in
-`BepInEx/LogOutput.log`. A warning with `rejectedBlocks > 0` identifies audio
-that could not be queued and gives the approximate first and last positions
-in the recording. CineCapture saves raw audio independently of the FFmpeg
-video process. If its audio queue overflows, it writes the same duration of
-silence so later sound stays at its original time. Once cumulative rejected
-audio exceeds two seconds, recording stops with an error. The temporary video
-and raw audio files remain available for recovery. During recording, new
-rejections are reported about once per second.
-
-To reproduce a drift seen late in a recording, use the same resolution and
-frame-rate settings and record for longer than the original failure point.
-Compare the time of the first reported rejection with the first audible drift.
-If `rejectedBlocks = 0` but drift remains, report the BepInEx log and the MP4
-stream durations. If finalization failed, also keep the intermediate MKV. The
-cause is then outside this audio queue rejection path.
-
 ## Contributions welcome
 
 CineCapture is the underlying capture project used by SagaCapture. We welcome

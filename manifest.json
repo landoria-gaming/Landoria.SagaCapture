@@ -1,6 +1,6 @@
 {
   "name": "SagaCapture",
-  "version_number": "1.0.1",
+  "version_number": "1.0.2",
   "website_url": "https://github.com/landoria-gaming/Landoria.SagaCapture",
   "description": "Records high-definition Valheim videos with automatic switching between your gameplay view and a second camera that follows your character.",
   "dependencies": [
