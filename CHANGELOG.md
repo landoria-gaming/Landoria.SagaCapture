@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+- Updated to BepInExPack_Valheim-5.4.2360
+
 ## 1.0.2
 
 - Upgrade CineCapture to version 1.0.2 to fix audio drifting progressively out of sync with video.
